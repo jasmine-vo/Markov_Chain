@@ -2,7 +2,7 @@
 
 
 from random import choice
-
+import sys
 
 def open_and_read_file(file_path):
     """Takes file path as string; returns text as string.
@@ -69,7 +69,7 @@ def make_text(chains):
     words.append(word)
     new_key = (key[1], word)
 
-    while new_key in chains:
+    while new_key in chains and len(words) < 100:
         word = choice(chains[new_key])
         words.append(word)
         new_key = (new_key[1], word)
@@ -78,7 +78,7 @@ def make_text(chains):
     return " ".join(words)
 
 
-input_path = "gettysburg.txt"
+input_path = sys.argv[1]
 
 # Open the file and turn it into one long string
 input_text = open_and_read_file(input_path)
