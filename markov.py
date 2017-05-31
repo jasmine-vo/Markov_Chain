@@ -4,7 +4,7 @@
 from random import choice
 import sys
 
-def open_and_read_file(file_path):
+def open_and_read_file(file_path, file_path_2):
     """Takes file path as string; returns text as string.
 
     Takes a string that is a file path, opens the file, and turns
@@ -54,34 +54,45 @@ def make_chains(text_string):
             chains[key] = []
         chains[key].append(value)
 
-    #print chains
+    # print chains
     return chains
 
 
 def make_text(chains):
     """Returns text from chains."""
 
-    key = choice(chains.keys())
+    upper_keys = []
+    
+    for key in chains:
+        if key[0][0].isupper():
+            upper_keys.append(key)
+
+    key = choice(upper_keys)
+    # key = choice(chains.keys())
     words = []
     words.append(key[0])
     words.append(key[1])
     word = choice(chains[key])
     words.append(word)
     new_key = (key[1], word)
-
-    while new_key in chains and len(words) < 100:
+  
+    while new_key in chains and len(words) < 140:
         word = choice(chains[new_key])
         words.append(word)
         new_key = (new_key[1], word)
+        if not word[-1].isalpha():
+            break
+            
 
 
     return " ".join(words)
-
+   
 
 input_path = sys.argv[1]
+input_path2 = sys.argv[2]
 
 # Open the file and turn it into one long string
-input_text = open_and_read_file(input_path)
+input_text = open_and_read_file(input_path, input_path2)
 
 # Get a Markov chain
 chains = make_chains(input_text)
